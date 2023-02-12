@@ -422,6 +422,17 @@ def max_y(letter):
             maxy = max(maxy, line.starty)
     return maxy
 
+
+def letter_filter(letter_list):
+    new_list = []
+    for letter in letter_list:
+        if((arm_counter(letter) < 4) and
+           (leg_counter(letter) < 4) and
+           (trunk_counter(letter) <4)):
+            new_list.append(letter)
+    return new_list
+    
+
 def potential_letter_sort(line_list):
     print("running potential letter sort....")
     
@@ -534,8 +545,10 @@ def potential_letter_sort(line_list):
             #temp_sorted.append(letter)
     print("Okay, here we go...")
     print("It's letter morphin' time!")
+    temp_sorted = letter_filter(temp_sorted)
     real_letterz = []
     for letter in temp_sorted:
+        
         new_letter = Word("", (0,0),(0,0))
         xvals = 0
         yvals = 0
@@ -548,10 +561,10 @@ def potential_letter_sort(line_list):
             xvals_2 += line.endxy[0]
             yvals_2 += line.endxy[1]
             index += 1
-        xvals = xvals / index
-        yvals = yvals / index
-        xvals_2 = xvals_2 / index
-        yvals_2 = yvals_2 / index
+        xvals = xvals // index
+        yvals = yvals // index
+        xvals_2 = xvals_2 // index
+        yvals_2 = yvals_2 // index
         lcoords = (xvals, yvals)
         rcoords = (xvals_2, yvals_2)
         if a_check(letter):
@@ -585,7 +598,10 @@ def potential_letter_sort(line_list):
         else:
             new_letter = Word("x", lcoords, rcoords)
 
-        real_letterz.append(new_letter)
+        if new_letter.name != "":
+            real_letterz.append(new_letter)
+        for letter in real_letterz:
+            print(letter.name, letter.lcoords, letter.rcoords)
     #return temp_sorted OLD SCOOL
     return real_letterz # NEW SCOOLa
 
@@ -595,9 +611,9 @@ def wordCatcher():
     current_words = []
     #TODO: allow for flexibility based on screen size
     #TODO: for now assuming 800x600
-    for x in range(19):
-        x1 = x*40
-        line_list = lineCatcher(x1, 50, x1+40, 150)
+    for x in range(5):
+        x1 = x*40 + 1
+        line_list = lineCatcher(x1, 350, x1+40, 450)
         letters = potential_letter_sort(line_list)
         #**************************
         # NEED letters to return string e.g. "e", "h", "*" (wildcard), etc.
@@ -630,16 +646,15 @@ def wordCatcher():
     for words in completed_words:
         print(word.name)
 
+
 def neighbours(some_word, some_letter):
     if ((abs(some_word.lcoords[1] - some_letter.lcoords[1]) < 5) and
     (abs(some_word.rcoords[0] - some_letter.rcoords[0] < 7))):
         return True
     else:
         return False
-                       
 
-
-                    
+                                           
 def a_check(some_letter):
     arms = arm_counter(some_letter)
     legs = leg_counter(some_letter)
@@ -886,7 +901,10 @@ liney_list = [Line((1,1),(1,1),Pixel(255,255,0)),
 #print("liney list total: " + str(len(liney_list)))
 #sorted_letters = potential_letter_sort(liney_list)
 #print("sorted letter total: " + str(len(sorted_letters)))
+
+
 wordCatcher()
+
 
 def canvas_me(some_list, instruct):
 
