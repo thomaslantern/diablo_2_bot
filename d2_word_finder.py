@@ -241,6 +241,7 @@ def lineCatcher (x1,y1,x2,y2):
                 ## TODO: do I need templist?
     print("linelist size: ", len(tempList))
     return tempList
+
    
 
 def max_height(line_list):
@@ -435,79 +436,47 @@ def letter_filter(letter_list):
 
 def potential_letter_sort(line_list):
     print("running potential letter sort....")
-    
-    # WE BE SORTIN SORTIN
     letter_sorted = []
     temp_sorted = []
     for line in line_list:
-        #print("line in line list: " + str(line.startxy)+","+str(line.endxy))
-        #print("Current temp sorted: ")
-        #for temp in temp_sorted:
-            #print("*************************")
-            #print("NEW LETTER")
-            
-            #for lines in temp:
-                #print(lines.startxy, lines.endxy, lines.colour.r, lines.colour.g, lines.colour.b)
-            #print("*************************")
-        
         # If the list is empty, start a new letter:
         if temp_sorted == []:
-            #print("empty list!")
             temp_sorted.append([line])
         else:
-            
             index = 0 # used if a line connects two letters
             index_list = []
-            
             for letter in temp_sorted:
                 connected = False
-                #print("current letter size: " + str(len(letter)))
                 # Check if same colour, and
                 # check if connected
                 # lists are sorted by Y value
-
-                
-                #print("index list reset.")
+                max_y_val = max_y(letter)                
                 # Check colour first:
-                max_y_val = max_y(letter)
                 if close_rgb(line.colour, letter[0].colour):
-                    #print("close rgb, checking lines in current letter")
                     # Same colour, check if connected:
                     for line2 in letter:
-                        #print("checking against current line2: " + str(line2.startxy)+","+str(line2.endxy))
-                        
                         if check_connection(line, line2):
-                            #print("they connected:")
-                            #print("line from 1st loop: ")
-                            #print(str(line.startxy)+","+str(line.endxy))
-                            #print("line from inner loop: ")
-                            #print(str(line2.startxy)+","+str(line2.endxy))
                             connected = True
                             if index not in index_list:
-                                #print("adding index: " + str(index))
                                 index_list.append(index)
                 if connected == False and max_y_val < (line.starty - 1):
                     # no connection and max_y is too far to connect?
                     # add this letter to letter_sorted, no need
                     # to search through it anymore (remove from
                     # temp_sorted)
-                    pass                    
+                    pass                    #TO DO: FIX OR REMOVE THIS
                     #if len(letter) > 1:
                         ##print("adding letta to sorted....")
                         #letter_sorted.append(letter)
                         #del temp_sorted[index]
                         #index -= 1
                 index += 1
-                #print("INDEX: " + str(index) + " INDEX LIST: " + str(len(index_list)))
-                #print("contents of index list: ")
                 for ind in index_list:
-                    #print(ind)
+                    #TO DO: FIX OR REMOVE THIS
                     pass
             if index_list == []:
-                #print("OICURMT")
                 # didn't connect to any letter, it's a new letter now
                 temp_sorted.append([line])
-                #print("STILL MT")
             elif len(index_list) > 1:
                 temp_letter = []
                 index_list.reverse()
@@ -518,31 +487,14 @@ def potential_letter_sort(line_list):
                     else:
                         temp_letter.extend(temp_sorted[connection])
                     del temp_sorted[connection]
-                #print("appending!")
                 temp_letter.append(line)
                 temp_sorted.append(temp_letter)
                 
             else:
                 
                 # line is connected to exactly one letter
-                #print("there is exactly one letter it is connected to?")
                 if temp_sorted != []:
-                    #print("INDEX: " + str(index_list[0]))
                     temp_sorted[index_list[0]].append(line)
-                    #for lines in temp_sorted[index_list[0]]:
-                        #print(lines.startx,lines.endx)
-                
-            
-    
-    #print("TEMP SORT EMPTY? :" + str(len(temp_sorted)))
-
-    #if temp_sorted != []:
-    #    letter_sorted.extend(temp_sorted)
-    #temp_sorted = []
-    #for letter in letter_sorted:
-        #letter = sorted_lines(letter)
-        #if len(letter) > 4 and trunk_counter(letter) < 4:
-            #temp_sorted.append(letter)
     print("Okay, here we go...")
     print("It's letter morphin' time!")
     temp_sorted = letter_filter(temp_sorted)
