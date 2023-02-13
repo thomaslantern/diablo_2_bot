@@ -185,14 +185,11 @@ def sorted_lines (line_list):
                 
            
 def lineCatcher (x1,y1,x2,y2):
-    window_name = "Diablo II"#"New Text Document - Notepad" #
+    window_name = "New Text Document - Notepad" #"Diablo II"#
     wd = win32ui.FindWindow(None, window_name)
     tempList = []
     print("Searching for lines... please wait...")
     for rows in range(y1, y2):
-        #print("current row: ",rows)    
-        #TODO: TEST LINE: #print("running, please be patient...")
-        #TODO: TEST LINE: #print("Current row: " + str(rows))
         
         for columns in range(x1, x2):            
             dc = wd.GetWindowDC()
@@ -379,35 +376,23 @@ def leg_counter(line_list):
 
 def check_connection(some_line, some_other_line):
     delta_y = abs(some_line.starty - some_other_line.starty)
-    colourpoo = rgb_to_hex(some_line.colour.r, some_line.colour.g, some_line.colour.b)
-    ##print(str(some_line.startx)+","+str(some_line.starty)+","
-    #      + str(some_line.endx)+","+str(some_line.endy) + "," + colourpoo)
-    colourpoo = rgb_to_hex(some_other_line.colour.r, some_other_line.colour.g, some_other_line.colour.b)
-    ##print(str(some_other_line.startx)+","+str(some_other_line.starty)+","
-    #      + str(some_other_line.endx)+","+str(some_other_line.endy) + "," + colourpoo)
+    
     s_x1 = some_line.startx
-    ##print("s_x1: " + str(s_x1))
     e_x1 = some_line.endx
-    ##print("e_x1: " + str(e_x1))
     s_x2 = some_other_line.startx
-    ##print("s_x2: " + str(s_x2))
-    e_x2 = some_other_line.endx
-    ##print("e_x2: " + str(e_x2)) 
+    e_x2 = some_other_line.endx 
     if delta_y < 2:
         # start of line 2 is between, equal to
         # or exactly 1 away from start or end
         # of line 1
         if ((s_x1 - 1) <= s_x2 <= (e_x1 + 1) or
             (s_x2 - 1) <= s_x1 <= (e_x2 + 1)):
-            #print("True")
             return True
         # similar, but for end of line 2
         elif ((s_x1 - 1) <= e_x2 <= (e_x1 + 1) or
               (s_x2 - 1) <= e_x1 <= (e_x2 + 1)):
-            #print("True")
             return True
         else:
-            #print("False")
             return False
     else:
         return False
@@ -495,6 +480,8 @@ def potential_letter_sort(line_list):
                 # line is connected to exactly one letter
                 if temp_sorted != []:
                     temp_sorted[index_list[0]].append(line)
+    return temp_sorted # KILL ME LATER
+'''
     print("Okay, here we go...")
     print("It's letter morphin' time!")
     temp_sorted = letter_filter(temp_sorted)
@@ -556,7 +543,7 @@ def potential_letter_sort(line_list):
             print(letter.name, letter.lcoords, letter.rcoords)
     #return temp_sorted OLD SCOOL
     return real_letterz # NEW SCOOLa
-
+'''
 
 def wordCatcher():
     completed_words = []
@@ -565,7 +552,7 @@ def wordCatcher():
     #TODO: for now assuming 800x600
     for x in range(5):
         x1 = x*40 + 1
-        line_list = lineCatcher(x1, 350, x1+40, 450)
+        line_list = lineCatcher(x1, 15, x1+40, 150)
         letters = potential_letter_sort(line_list)
         #**************************
         # NEED letters to return string e.g. "e", "h", "*" (wildcard), etc.
@@ -831,6 +818,8 @@ liners = [Line((11,11),(15,11), black),
 #liney_list = lineCatcher(375,435,450,450) #MULTIPL
 
 
+liney_list = lineCatcher(5,10,300,40) #notepad early edition
+
 '''
 liney_list = [Line((1,1),(1,1),Pixel(255,255,0)),
               Line((2,1),(2,1),Pixel(255,127,0)),
@@ -851,11 +840,11 @@ liney_list = [Line((1,1),(1,1),Pixel(255,255,0)),
               Line((3,4),(6,4),Pixel(0,0,255))]
 '''
 #print("liney list total: " + str(len(liney_list)))
-#sorted_letters = potential_letter_sort(liney_list)
+sorted_letters = potential_letter_sort(liney_list)
 #print("sorted letter total: " + str(len(sorted_letters)))
 
 
-wordCatcher()
+#wordCatcher()
 
 
 def canvas_me(some_list, instruct):
@@ -909,6 +898,8 @@ def canvas_me(some_list, instruct):
     else:
         print("NO vAlId OPTION CHOSEN")
     root.mainloop()
+
+canvas_me(sorted_letters, "letterfindall")
 
 '''
 m = aquamarine
