@@ -611,17 +611,11 @@ def e_check(some_letter):
     legs = leg_counter(some_letter)
     trunks = trunk_counter(some_letter)
     letter_list = []
-    #print("ARMS: " + str(arms) + " YEGS: " + str(legs) + " TRUNKS: " + str(trunks))
     if arms == 3 and trunks == 1 and leg_counter(some_letter) == 0:
-        #print("E found: ")
-        for line in some_letter:
-            #print(str(line.startxy)+','+str(line.endxy))
-            #canvass.create_line(line.startx, line.starty, line.endx, line.endy, fill="purple")
-            pass
         return True
-        
-    #else:
-        #print("not an E, sorry")
+       
+    else:
+        return False
 
 
 def f_check(some_letter):
