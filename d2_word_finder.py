@@ -17,10 +17,11 @@ point = POINT()
 
 
 class Pixel:
-    def __init__(self, red = 0, green = 0, blue = 0):
+    def __init__(self, red, green, blue):
         self.r = red
         self.g = green
         self.b = blue
+        self.colour = colour_check(red, green, blue)
 
         
 class Line:
@@ -43,13 +44,13 @@ class Word:
         
 
 
-def colour_check(pixel):
+def colour_check(r, g, b):
     
-    r = pixel.r//25
-    g = pixel.g//25
-    b = pixel.b//25
+    r = r//25
+    g = g//25
+    b = b//25
     if r == g and g == b:
-        r == pixel.r//32
+        r == r//32
         
         if r == 0:
             return "black"
@@ -84,20 +85,23 @@ def colour_check(pixel):
     else:
         return "red pink"
 
-    
+# used https://www.rapidtables.com/web/color/RGB_Color.html
+# ("RGB color codes chart") to figure out values to determine colours
 def row_check (pixel):
     row = 0
     r = pixel.r//25
     g = pixel.g//25
     b = pixel.b//25
-    colour = colour_check(pixel)
+    colour = pixel.colour
     if colour == ("red" or "orange" or "yellow"):
-        row = r/2 + 4/2
+        row = r/2 + b/2
     elif colour == ("green" or "light green"):
-        row = g/2 + 4/2
-    elif colour ==("blue green" or "light blue" or "blue" or "dark blue"):
-        row = b/2 + r/2
-    elif colour == ("dark purple" or "purple pink" or "red pink"):
+        row = g/2 + b/2
+    elif colour ==("light blue" or "blue" or "dark blue"):
+        row = b/2 + g/2
+    elif colour == ("dark purple" or "purple pink"):
+        row = b/2 + g/2
+    elif colour == ("red pink" or "blue green"):
         row = r/2 + g/2
     else:
         r == pixel.r//32
@@ -115,8 +119,8 @@ def colour_friends(pixel, pixel2):
     g = pixel2.g//25
     b = pixel2.b//25
     
-    colour = colour_check(pixel)
-    colour2 = colour_check(pixel2)
+    colour = pixel.colour
+    colour2 = pixel2.colour
     
     if colour == ("red"):
         return colour == colour2 or (colour2 == ("orange" or "red pink") and row_check(pixel) == row_check(pixel2))
@@ -672,9 +676,7 @@ def l_check(some_letter):
     trunks = trunk_counter(some_letter)
     if arms == 1 and trunks == 1 and legs == 0:
         return True
-        #for line in some_letter:
-         #   canvass.create_line(line.startx, line.starty, line.endx, line.endy, fill="green")
-
+        
 
 def m_check(some_letter):
     arms = arm_counter(some_letter)
@@ -682,13 +684,9 @@ def m_check(some_letter):
     trunks = trunk_counter(some_letter)
     if arms == 0 and trunks == 2 and legs == 2:
         return True
-        #for line in some_letter:
-         #   canvass.create_line(line.startx, line.starty, line.endx, line.endy, fill="red")
     if arms == 1 and trunks == 3 and legs == 0:
         return True
-        #for line in some_letter:
-         #   canvass.create_line(line.startx, line.starty, line.endx, line.endy, fill="red")
-
+     
 
 def n_check(some_letter):
     arms = arm_counter(some_letter)
@@ -776,68 +774,10 @@ def rgb_to_hex(r, g, b):
         new_hex += str(num)
     return '#' + new_hex
 
-'''
-black = Pixel(0,0,0)
-white = Pixel(255,255,255)
-liners = [Line((11,11),(15,11), black),
-          Line((11,12),(11,12), black),
-          Line((12,12),(13,12), white),
-          Line((12,12),(14,12), white),
-          Line((15,12),(15,12), black),
-          Line((11,13),(11,13), black),
-          Line((12,13),(15,13), white),
-          Line((11,14),(11,14), black),
-          Line((12,14),(12,14), white),
-          Line((13,14),(13,14), black),
-          Line((14,14),(15,14), white),
-          Line((11,15),(13,15), black),
-          Line((14,15),(15,15), white),
-          Line((11,16),(11,16), black),
-          Line((12,16),(12,16), white),
-          Line((13,16),(13,16), black),
-          Line((14,16),(15,16), white),
-          Line((11,17),(11,17), black),
-          Line((12,17),(15,17), white),
-          Line((11,18),(15,18), black)]
-'''
-#sorted_letters = potential_letter_sort(liners)
-
-#liney_list = lineCatcher(300,100,500,600) #second rectangle
-#liney_list = lineCatcher(100,100,220,220)
-#liney_list = lineCatcher(300,300,350,400) #NOTEPAD
-#liney_list = lineCatcher(500,30,750,100) #map name
-#liney_list = lineCatcher(412,435,426,450) #T
-#liney_list = lineCatcher(385,325,395,340) #E
-#liney_list = lineCatcher(375,435,390,450) #M
-#liney_list = lineCatcher(375,435,450,450) #MULTIPL
 
 
 liney_list = lineCatcher(5,10,300,40) #notepad early edition
-
-'''
-liney_list = [Line((1,1),(1,1),Pixel(255,255,0)),
-              Line((2,1),(2,1),Pixel(255,127,0)),
-              Line((3,1),(3,1),Pixel(255,255,0)),
-              Line((4,1),(6,1),Pixel(0,255,255)),
-              Line((1,2),(3,2),Pixel(0,255,0)),
-              Line((4,2),(4,2),Pixel(0,255,255)),
-              Line((5,2),(5,2),Pixel(255,127,0)),
-              Line((6,2),(6,2),Pixel(0,255,255)),
-              Line((1,3),(1,3),Pixel(0,0,255)),
-              Line((2,3),(2,3),Pixel(0,255,0)),
-              Line((3,3),(3,3),Pixel(0,0,255)),
-              Line((4,3),(4,3),Pixel(255,255,0)),
-              Line((5,3),(5,3),Pixel(0,255,255)),
-              Line((6,3),(6,3),Pixel(255,255,0)),
-              Line((1,4),(1,4),Pixel(0,0,255)),
-              Line((2,4),(2,4),Pixel(0,255,0)),
-              Line((3,4),(6,4),Pixel(0,0,255))]
-'''
-#print("liney list total: " + str(len(liney_list)))
 sorted_letters = potential_letter_sort(liney_list)
-#print("sorted letter total: " + str(len(sorted_letters)))
-
-
 #wordCatcher()
 
 
@@ -894,111 +834,3 @@ def canvas_me(some_list, instruct):
     root.mainloop()
 
 canvas_me(sorted_letters, "letterfindall")
-
-'''
-m = aquamarine
-e = green
-f = black
-h = black
-i = indigo
-l = light blue
-t = red
-
-
-
-
-
-canvas_me(liney_list, "linecatcher")
-canvas_me(sorted_letters, "sortedlist")
-for letter in sorted_letters:
-    if len(letter) == 0:
-        print("WASH ME, WA-ASH ME-EY WA-ASH ME-EY.......")
-canvas_me(sorted_letters, "letterfindall")
-
-for lines in liney_list:
-    colourpoo = rgb_to_hex(lines.colour.r, lines.colour.g, lines.colour.b)
-        
-    #print(str(lines.startx)+","+str(lines.starty)+","+
-          #str(lines.endx)+","+str(lines.endy) + "," + colourpoo)
-
-
-for letters in sorted_letters:
-    #print("LETTER")
-    for lines in letters:
-        colourpoo = rgb_to_hex(lines.colour.r, lines.colour.g, lines.colour.b)
-        
-        #print(str(lines.startx)+","+str(lines.starty)+","+
-             #str(lines.endx)+","+str(lines.endy) + "," + colourpoo)
-    #print(e_check(letters))
-    #print("END OF LETTER ******************")
-
-
-for letters in sorted_letters:
-    root = tk.Tk()
-    canvass = tk.Canvas(root, width=800, height=600, bg="white")
-    canvass.pack()
-    
-    for lines in letters:
-        canvass.create_line(lines.startx, lines.starty, lines.endx+1, lines.endy, fill="black")
-    root.mainloop()
-
-
-#def draw_me(filename) maybe if I'm crazyyyyyyyyyyyy
-
-   
-#for lines in liners:
- #   colourpoo = rgb_to_hex(lines.colour.r, lines.colour.g, lines.colour.b)
-    #canvass.create_line(lines.startx, lines.starty, lines.endx, lines.endy, fill=colourpoo)
-for letters in sorted_letters:
-    
-    #print("LETTER:")
-    
-    for lines in letters:
-        colourpoo = rgb_to_hex(lines.colour.r, lines.colour.g, lines.colour.b)
-        
-        #print(str(lines.startx)+","+str(lines.starty)+","+
-              str(lines.endx)+","+str(lines.endy) + "," + colourpoo)
-        
-        #canvass.create_line(lines.startx, lines.starty, lines.endx, lines.endy, fill=colourpoo)
-    e_check(letters)
-    l_check(letters)
-    m_check(letters)
-    #print("END LETER******************************************************")
-
-
-root.mainloop()
-
-root = tk.Tk()
-canvass = tk.Canvas(root, width=800, height=800, bg="white")
-canvass.pack()
-
-
-for lines in liney_list:
-    
-    colourpoo = rgb_to_hex(lines.colour.r, lines.colour.g, lines.colour.b)
-   
-    #canvass.create_line(lines.startx, lines.starty,
-                        #lines.endx, lines.endy, fill=colourpoo)
-
-#for lines in liners:
- #   colourpoo = rgb_to_hex(lines.colour.r, lines.colour.g, lines.colour.b)
-    #canvass.create_line(lines.startx, lines.starty, lines.endx, lines.endy, fill=colourpoo)
-for letters in sorted_letters:
-    
-    #print("LETTER:")
-    
-    for lines in letters:
-        colourpoo = rgb_to_hex(lines.colour.r, lines.colour.g, lines.colour.b)
-        
-        #print(str(lines.startx)+","+str(lines.starty)+","+
-              str(lines.endx)+","+str(lines.endy) + "," + colourpoo)
-        
-        #canvass.create_line(lines.startx, lines.starty, lines.endx, lines.endy, fill=colourpoo)
-    e_check(letters)
-    l_check(letters)
-    m_check(letters)
-    #print("END LETER******************************************************")
-
-
-root.mainloop()
-'''
